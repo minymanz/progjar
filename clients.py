@@ -6,20 +6,17 @@ import threading
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # Connect the socket to the port where the server is listening
-server_address = ('localhost', 5002)
+server_address = ('localhost', port)
 print >>sys.stderr, 'connecting to %s port %s' % server_address
-sock.connect(server_address)
+result = sock.connect(server_address)    
+
 name = raw_input("nama : ")
 sock.sendall(name)
 
-#id1 = sock.recv(256)
-#id2 = sock.recv(256)
-#print >>sys.stderr, '%s, %s is online' % (id1,id2)
-print >>sys.stderr, 'User online : '
-n = int(sock.recv(4))
-for i in xrange(0,n-1):
-    name = sock.recv(256)
-    print >>sys.stderr, '- %s' % name
+id1 = sock.recv(256)
+id2 = sock.recv(256)
+print >>sys.stderr, '%s, %s is online' % (id1,id2)
+
 
 def send():
     while True :

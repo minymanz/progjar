@@ -2,14 +2,24 @@ import sys
 import socket
 import threading
 
-name = raw_input("nama : ")
 # Create a TCP/IP socket
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # Connect the socket to the port where the server is listening
-server_address = ('localhost', 5000)
+server_address = ('localhost', 5001)
 print >>sys.stderr, 'connecting to %s port %s' % server_address
 sock.connect(server_address)
+name = raw_input("nama : ")
+sock.sendall(name)
+
+print >>sys.stderr, 'User online : '
+n = int(sock.recv(4))
+for i in xrange(0,n-1):
+    name = sock.recv(256)
+    print >>sys.stderr, '- %s' % name
+#id1 = sock.recv(256)
+#id2 = sock.recv(256)
+#print >>sys.stderr, '%s, %s is online' % (id1,id2)
 
 def send():
     while True :
@@ -22,8 +32,9 @@ def send():
 def receive():
     while True :
         nama = sock.recv(256)
+        status = sock.recv(256)
         data = sock.recv(256)
-        print >>sys.stderr, '%s : %s' % (nama,data)
+        print >>sys.stderr, '%s (%s) : %s' % (nama,status,data)
 
 
 threads = []
