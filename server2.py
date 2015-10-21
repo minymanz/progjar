@@ -60,10 +60,18 @@ def client(i):
                     connection[j].sendall(name[i])
                     connection[j].sendall('group')
                     connection[j].sendall(sent[i])
-        elif iden[i] == 'server' or sent[i] == 'server' :
-                connection[i].sendall('server')
-                connection[i].sendall('alert')
-                connection[i].sendall('User not found or Syntax error')
+
+        elif iden[i] == 'server' and sent[i] == 'server' :
+            connection[i].sendall('server')
+            connection[i].sendall('alert')
+            connection[i].sendall('User not found or Syntax error')
+
+        elif iden[i] == 'list' and sent[i] == 'user' and count[i] == 2:
+            connection[i].sendall('User Online :')
+            for j in xrange(0,n):
+                if i != j :
+                    connection[i].sendall(idi[j])
+
         else :
             match = 0
             for j in xrange(0,n) :

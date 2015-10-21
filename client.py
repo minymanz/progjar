@@ -13,20 +13,15 @@ name = raw_input("nama : ")
 sock.sendall(name)
 
 
-print >>sys.stderr, 'User online : '
+print >>sys.stderr, 'Waiting for other client...'
 n = int(sock.recv(4))
 for i in xrange(0,n-1):
-    name = sock.recv(256)
-    print >>sys.stderr, '- %s' % name
-#id1 = sock.recv(256)
-#id2 = sock.recv(256)
-#print >>sys.stderr, '%s, %s is online' % (id1,id2)
-
+    names = sock.recv(256)
+    print >>sys.stderr, '- %s connected' % names
 
 def send():
     while True :
         message = raw_input()
-        #print >>sys.stderr, 'sending "%s"' % message
         sock.sendall(name)
         sock.sendall(message)
         
@@ -34,9 +29,14 @@ def send():
 def receive():
     while True :
         nama = sock.recv(256)
-        status = sock.recv(256)
-        data = sock.recv(256)
-        print >>sys.stderr, '%s (%s) : %s' % (nama,status,data)
+        if nama == 'User Online :':
+            for i in xrange(0,n-1):
+                names = sock.recv(256)
+                print >>sys.stderr, '- %s' % names
+        else :
+            status = sock.recv(256)
+            data = sock.recv(256)
+            print >>sys.stderr, '%s (%s) : %s' % (nama,status,data)
 
 
 threads = []
@@ -52,11 +52,3 @@ tt.start()
 
 for t in threads:
     t.join()
-
-#while True :
-#    nama = sock.recv(256)
-#    data = sock.recv(256)
-#    print >>sys.stderr, '%s : %s' % (nama,data)
-#finally:
-    #print >>sys.stderr, 'closing socket'
-    #sock.close()
