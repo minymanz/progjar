@@ -17,7 +17,8 @@ t = [i for i in range(1000)]
 threads = [i for i in range(1000)]
 port = 5000
 
-n = input("Jumlah Client : ")
+#n = input("Jumlah Client : ")
+n = 3
 print >>sys.stderr, 'waiting for a connection'
 
 for i in xrange(0,n) :
